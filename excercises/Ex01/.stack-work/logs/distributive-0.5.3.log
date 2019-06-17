@@ -1,0 +1,13 @@
+[1 of 2] Compiling Main             ( /private/var/folders/5q/qvkxmq8s13705c4fdtgnd90m0000gn/T/stack54446/distributive-0.5.3/Setup.lhs, /private/var/folders/5q/qvkxmq8s13705c4fdtgnd90m0000gn/T/stack54446/distributive-0.5.3/.stack-work/dist/x86_64-osx/Cabal-2.0.1.0/setup/Main.o )
+[2 of 2] Compiling StackSetupShim   ( /Users/chrisjoy/.stack/setup-exe-src/setup-shim-mPHDZzAJ.hs, /private/var/folders/5q/qvkxmq8s13705c4fdtgnd90m0000gn/T/stack54446/distributive-0.5.3/.stack-work/dist/x86_64-osx/Cabal-2.0.1.0/setup/StackSetupShim.o )
+Linking /private/var/folders/5q/qvkxmq8s13705c4fdtgnd90m0000gn/T/stack54446/distributive-0.5.3/.stack-work/dist/x86_64-osx/Cabal-2.0.1.0/setup/setup ...
+clang: warning: argument unused during compilation: '-nopie' [-Wunused-command-line-argument]
+clang: warning: argument unused during compilation: '-nopie' [-Wunused-command-line-argument]
+Configuring distributive-0.5.3...
+clang: warning: argument unused during compilation: '-nopie' [-Wunused-command-line-argument]
+Preprocessing library for distributive-0.5.3..
+Building library for distributive-0.5.3..
+[1 of 2] Compiling Data.Distributive ( src/Data/Distributive.hs, .stack-work/dist/x86_64-osx/Cabal-2.0.1.0/build/Data/Distributive.o )
+[2 of 2] Compiling Data.Distributive.Generic ( src/Data/Distributive/Generic.hs, .stack-work/dist/x86_64-osx/Cabal-2.0.1.0/build/Data/Distributive/Generic.o )
+Installing library in /Users/chrisjoy/.stack/snapshots/x86_64-osx/lts-10.3/8.2.2/lib/x86_64-osx-ghc-8.2.2/distributive-0.5.3-Bots8MXh3UTCJnyeMycJ7n
+Registering library for distributive-0.5.3..
