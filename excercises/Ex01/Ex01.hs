@@ -84,7 +84,6 @@ circlePic :: Colour -> Float -> Float -> PictureObject
 circlePic col n i = Circle (Point 400 400) (i * (400/n)) col Solid SolidFill
 
 
-
 -- use 'writeToFile' to write a picture to file "ex01.png" to test your
 -- program if you are not using Haskell for Mac
 -- e.g., call
