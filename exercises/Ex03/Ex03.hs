@@ -98,7 +98,6 @@ createBST (x:xs) s e
         leftSubtree =  createBST (x:xs) s (midIndex - 1)
         rightSubtree = createBST (x:xs) (midIndex + 1) e
 
- 
 prop_astonishing_1 
   = forAll sortedListsWithoutDuplicates $ isBST . astonishing
 
