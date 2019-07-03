@@ -85,3 +85,11 @@ retraceUtil (PenUp i) acc pStyle pColour pPen = retraceUtil i (PenDown acc) pSty
 -----------------------------------------------------------------
 -- import Debug.Trace
 -- retraceUtil i acc pStyle pColour pPen | trace ("retraceUtil:" ++ show i) False = undefined
+
+
+-----------------------------------------------------------------
+overlay :: [Instructions] -> Instructions
+overlay [] = Stop
+overlay [x] = (x `andThen` (invisibly (retrace x)))
+overlay (x:xs) = (x `andThen` (invisibly (retrace x))) `andThen` overlay xs
+
