@@ -13,12 +13,8 @@ capitalise :: FilePath -> FilePath -> IO ()
 capitalise i o = do
                   contents <- readFile i
                   string <- pure contents
-                  writeFile o (capitaliser string)
-                where
-                  capitaliser :: String -> String
-                  capitaliser = map toUpper
+                  writeFile o (map toUpper string)
 
-                
 sumFile :: IO ()
 sumFile = do
             argv <- getArgs
