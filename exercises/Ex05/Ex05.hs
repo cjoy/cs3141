@@ -15,6 +15,7 @@ capitalise i o = do
                   string <- pure contents
                   writeFile o (map toUpper string)
 
+
 sumFile :: IO ()
 sumFile = do
             argv <- getArgs

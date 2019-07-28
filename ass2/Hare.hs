@@ -12,6 +12,7 @@ data RE :: * -> * where
   -- Choose
   -- Star
   Action :: (a -> b) -> RE a -> RE b
+
 match :: (Alternative f, Monad f) => RE a -> Hare f a
 match re = error "'match' unimplemented"
 
