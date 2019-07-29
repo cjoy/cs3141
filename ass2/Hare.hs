@@ -40,27 +40,37 @@ matchAnywhere re = match re <|> (readCharacter >> matchAnywhere re)
 
 infixr `cons`  
 cons :: RE a -> RE [a] -> RE [a]
-cons x xs =  Action stringifyTuple (x `Seq` xs)
+cons x xs = Action flattenTuple (x `Seq` xs)
 
+-- TODO: using accumulator??
 string :: String -> RE String
-string [] = Action (const []) Empty
+string []     = emptyRE
 string (x:xs) = cons (Char [x]) (string xs)
                         
 rpt :: Int -> RE a -> RE [a]
-rpt n re = error "'rpt' unimplemented"
+rpt 0 re = emptyRE
+rpt n re = cons (re) (rpt (n-1) re)
 
 rptRange :: (Int, Int) -> RE a -> RE [a]
-rptRange (x,y) re = error "'rptRange' unimplemented"
+rptRange (x,y) re
+    | (x > y)   = Action (const []) Fail
+    | otherwise = (rptRange (x+1, y) re) `Choose` (rpt x re)
 
 option :: RE a -> RE (Maybe a)
-option re = error "'option' unimplemented"
+option re = (Action Just re) `Choose` (Action (\_ -> Nothing) Empty)
 
 plus :: RE a -> RE [a]
-plus re = Action stringifyTuple (re `Seq` Star re)
+plus re = Action flattenTuple (re `Seq` Star re)
 
 choose :: [RE a] -> RE a
-choose res = error "'choose' unimplemented"
+choose res = chooser res Fail
+  where chooser :: [RE a] -> RE a -> RE a
+        chooser [] acc      = acc
+        chooser (x:xs) acc  = chooser xs (acc `Choose` x)
 
 -- Helpers
-stringifyTuple :: (a, [a]) -> [a]
-stringifyTuple (x, xs) = (x:xs)
+flattenTuple :: (a, [a]) -> [a]
+flattenTuple (x, xs) = (x:xs)
+
+emptyRE :: RE [t]
+emptyRE = Action (const []) Empty
