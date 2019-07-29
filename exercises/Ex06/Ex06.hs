@@ -4,7 +4,6 @@ module Ex06 where
 
 -- Datatype of formulas
 -- --------------------
-
 data Formula ts where
   Body   :: Term Bool                     -> Formula ()
   Exists :: Show a 
@@ -13,23 +12,18 @@ data Formula ts where
 data Term t where
   Name    :: String -> Term t    -- to facilitate pretty printing only. 
                                  -- don't use this in actual formulae.
-
   Con     :: t -> Term t -- Constant values
-
   -- Logical operators
   And     :: Term Bool -> Term Bool -> Term Bool
   Or      :: Term Bool -> Term Bool -> Term Bool
-
   -- Comparison operators
   Smaller :: Term Int  -> Term Int  -> Term Bool
-
   -- Arithmetic operators
   Plus    :: Term Int  -> Term Int  -> Term Int
 
 
 -- Pretty printing formulas
 -- ------------------------
-
 instance Show t => Show (Term t) where
   show (Con v)       = show v
   show (And p q)     = "(" ++ show p ++ " && " ++ show q ++ ")"
@@ -48,18 +42,19 @@ instance Show (Formula ts) where
 
 -- Example formulas
 -- ----------------
-
 ex1 :: Formula ()
 ex1 = Body (Con True)
 
 ex2 :: Formula (Int, ())
-ex2 = Exists [1..10] $ \n ->
-        Body $ n `Smaller` (n `Plus` Con 1)
+-- ex2 = Exists [1..10] $ \n ->
+--     Body $ n `Smaller` (n `Plus` Con 1)
+ex2 = Exists [1..10] (\n -> Body $ n `Smaller` (n `Plus` Con 1))
 
 ex3 :: Formula (Bool, (Int, ()))
 ex3 = Exists [False, True] $ \p -> 
       Exists [0..2] $ \n -> 
         Body $ p `Or` (Con 0 `Smaller` n)
+
 
 -- Evaluating terms
 -- ----------------
@@ -71,18 +66,22 @@ eval (Or a b)       = eval a || eval b
 eval (Smaller a b)  = eval a < eval b
 eval (Plus a b)     = eval a + eval b
 
+
 -- Checking formulas
 -- -----------------
-
 satisfiable :: Formula ts -> Bool
-satisfiable (Body t) = eval t
-satisfiable (Exists as eq) = error "todo"
--- satisfiable f = error "'satisfiable' unimplemented"
+satisfiable (Body t)      = eval t
+satisfiable (Exists as f) = or $ satisfiable <$> f <$> Con <$> as
 
 
 -- Enumerating solutions of formulae
 -- ---------------------------------
-
 solutions :: Formula ts -> [ts]
-solutions f = error "'solutions' unimplemented"
-
+solutions (Body t) = terminate $ eval t
+  where terminate :: Bool -> [()]
+        terminate True  = [()]
+        terminate False = []
+solutions (Exists as f) = do
+  x <- filter (satisfiable <$> f <$> Con) as
+  y <- solutions <$> f <$> Con $ x
+  pure (x, y)
