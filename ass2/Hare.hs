@@ -40,9 +40,7 @@ matchAnywhere re = match re <|> (readCharacter >> matchAnywhere re)
 
 infixr `cons`  
 cons :: RE a -> RE [a] -> RE [a]
-cons x xs =  Action pairToString (x `Seq` xs)
-  where pairToString :: (a, [a]) -> [a]
-        pairToString (x, xs) = (x:xs)
+cons x xs =  Action stringifyTuple (x `Seq` xs)
 
 string :: String -> RE String
 string [] = Action (const []) Empty
@@ -58,8 +56,11 @@ option :: RE a -> RE (Maybe a)
 option re = error "'option' unimplemented"
 
 plus :: RE a -> RE [a]
-plus re = error "'plus' unimplemented"
+plus re = Action stringifyTuple (re `Seq` Star re)
 
 choose :: [RE a] -> RE a
 choose res = error "'choose' unimplemented"
 
+-- Helpers
+stringifyTuple :: (a, [a]) -> [a]
+stringifyTuple (x, xs) = (x:xs)
